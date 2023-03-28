@@ -20,7 +20,8 @@ public class CrawlyConfig {
     /**
      * Default configuration object.
      */
-    public static final CrawlyConfig DEFAULT = CrawlyConfig.builder().build();
+    public static final CrawlyConfig DEFAULT = CrawlyConfig.builder()
+            .build();
 
     /**
      * Number of async request to execute.

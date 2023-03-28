@@ -5,47 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68d83ae5-951b-4ac5-a8a7-aef728710c3d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/config/CrawlyConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/exception/CrawlyClientException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/exception/CrawlyException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/exception/CrawlyServerException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/MainClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/TestClass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/WebSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/Crawly.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/config/ProxyConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/config/ProxyConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/config/RequestConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/config/RequestConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/object/RequestResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/object/Response.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/param/GetRequestParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/param/GetRequestParam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/request/GetRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/request/GetRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/websession/request/PostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/request/PostRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/io/botlify/websession/WebSessionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/botlify/crawly/CrawlyTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/io/botlify/websession/config/ProxyConfigTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/botlify/crawly/config/ProxyConfigTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/io/botlify/websession/param/GetRequestParamTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/botlify/crawly/param/GetRequestParamTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/MainClass.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/TestClass$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/TestClass.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/WebSession$Builder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/WebSession.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/config/ProxyConfig$builder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/config/ProxyConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/config/RequestConfig$Builder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/config/RequestConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/object/RequestResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/param/GetRequestParam$Builder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/param/GetRequestParam.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/request/GetRequest$Builder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/request/GetRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/request/PostRequest$Builder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/botlify/websession/request/PostRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/Crawly.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/Crawly.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/MainClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/config/CrawlyConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/botlify/crawly/config/CrawlyConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,7 +154,7 @@
       <workItem from="1678126041440" duration="7043000" />
       <workItem from="1679847651850" duration="12306000" />
       <workItem from="1679935254452" duration="14000" />
-      <workItem from="1679935316455" duration="4112000" />
+      <workItem from="1679935316455" duration="13591000" />
     </task>
     <servers />
   </component>

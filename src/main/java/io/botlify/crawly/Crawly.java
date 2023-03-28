@@ -1,6 +1,7 @@
 package io.botlify.crawly;
 
 import io.botlify.crawly.config.CrawlyConfig;
+import io.botlify.crawly.config.ProxyConfig;
 import io.botlify.crawly.exception.CrawlyClientException;
 import io.botlify.crawly.exception.CrawlyServerException;
 import io.botlify.crawly.object.Response;
@@ -10,9 +11,13 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.apache.hc.client5.http.impl.DefaultRedirectStrategy;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
@@ -20,6 +25,7 @@ import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
 import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.client5.http.ssl.TrustAllStrategy;
+import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.config.Registry;
 import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
@@ -69,10 +75,10 @@ public final class Crawly {
     }
 
     public Crawly(@NotNull final CrawlyConfig config) {
+        this.config = config.toBuilder().build();
         this.httpClient = newHttpClient();
         this.semaphore = new Semaphore(config.getNumberAsyncRequest(), true);
         this.cookieStore = config.getCookieStore();
-        this.config = config;
     }
 
     /*
@@ -80,7 +86,7 @@ public final class Crawly {
      */
 
     @SneakyThrows
-    public CloseableHttpClient newHttpClient() {
+    private CloseableHttpClient newHttpClient() {
         final HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
         /*
@@ -93,51 +99,48 @@ public final class Crawly {
         /*
          * Create a SSLContext that uses our Trust Strategy to trust all self-signed certificates.
          */
-        SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
-        SSLContext sslContext = sslContextBuilder.loadTrustMaterial(null, TrustAllStrategy.INSTANCE).build();
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext);
+        final SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
+        final SSLContext sslContext = sslContextBuilder.loadTrustMaterial(null, TrustAllStrategy.INSTANCE).build();
+        final SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext);
 
-        RegistryBuilder<ConnectionSocketFactory> regBuilder = RegistryBuilder.create();
+        final RegistryBuilder<ConnectionSocketFactory> regBuilder = RegistryBuilder.create();
         regBuilder.register("https", sslConnectionSocketFactory);
         regBuilder.register("http", PlainConnectionSocketFactory.INSTANCE);
-        Registry<ConnectionSocketFactory> socketFactoryRegistry = regBuilder.build();
+        final Registry<ConnectionSocketFactory> socketFactoryRegistry = regBuilder.build();
 
         /*
          * PoolingHttpClientConnectionManager allow to reuse connections
          * and avoid the creation of new connections when the HttpClient is used in multiple threads.
          * This is useful when the HttpClient is used in a multithreaded environment.
          */
-        PoolingHttpClientConnectionManager poolingClientConnectionManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-        // poolingClientConnectionManager.setValidateAfterInactivity((int) (getTimeout() / 2));
-        // poolingClientConnectionManager.setMaxTotal();
-        // poolingClientConnectionManager.setDefaultMaxPerRoute(MAX_SYNCHRONOUS_REQUEST == 0 ? 3 : MAX_SYNCHRONOUS_REQUEST);
-
+        final PoolingHttpClientConnectionManager poolingClientConnectionManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+        poolingClientConnectionManager.setDefaultMaxPerRoute(config.getNumberAsyncRequest());
+        poolingClientConnectionManager.setMaxTotal(config.getNumberAsyncRequest());
         /*
-         * Verify if the Bright data proxy is enabled.
-         * If it is enabled, the HttpClient will use the proxy.
+         * Setup all the proxy configuration.
          */
-
         if (config.getProxyConfig() != null) {
-            // ProxyConfig proxyConfig = config.getProxyConfig();
-            // HttpHost brightDataProxy = new HttpHost(proxyConfig.getHost(), proxyConfig.getPort());
-            // if (proxyConfig.hasValidCredentials()) {
-            //     assert proxyConfig.getUsername() != null;
-            //     assert proxyConfig.getPassword() != null;
-            //     CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-            //     UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(proxyConfig.getUsername(), proxyConfig.getPassword());
-            //     credentialsProvider.setCredentials(new AuthScope(brightDataProxy), credentials);
-            //     httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-            // }
-            // httpClientBuilder.setProxy(brightDataProxy);
-        }
+            final ProxyConfig proxyConfig = config.getProxyConfig();
 
+            final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            final HttpHost httpHostProxy = new HttpHost(proxyConfig.getHost(), proxyConfig.getPort());
+            if (proxyConfig.hasValidCredentials()) {
+                assert proxyConfig.getUsername() != null;
+                assert proxyConfig.getPassword() != null;
+                final UsernamePasswordCredentials credentials =
+                        new UsernamePasswordCredentials(proxyConfig.getUsername(),
+                                proxyConfig.getPassword().toCharArray());
+                credentialsProvider.setCredentials(new AuthScope(httpHostProxy), credentials);
+
+            }
+            httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+            httpClientBuilder.setProxy(httpHostProxy);
+        }
         /*
          * Build the HttpClient for the client with HttpClientBuilder.
          */
-        httpClientBuilder.setDefaultCookieStore(this.cookieStore);
+        httpClientBuilder.setDefaultCookieStore(cookieStore);
         httpClientBuilder.setConnectionManager(poolingClientConnectionManager);
-        // httpClientBuilder.setMaxConnTotal(MAX_SYNCHRONOUS_REQUEST);
-        // httpClientBuilder.setMaxConnPerRoute(MAX_SYNCHRONOUS_REQUEST);
         return (httpClientBuilder.build());
     }
 
@@ -145,15 +148,14 @@ public final class Crawly {
      $      Request
      */
 
+    @SneakyThrows({InterruptedException.class})
     public @NotNull Response get(@NotNull final GetRequest request) throws IOException, CrawlyClientException,
             CrawlyServerException {
         final Instant start = Instant.now();
+        semaphore.acquire();
         try {
-            semaphore.acquire();
             final HttpGet httpGet = new HttpGet(request.getUrl());
             return (new Response(start, httpClient.execute(httpGet)));
-        } catch (InterruptedException e) {
-            throw (new RuntimeException(e));
         } finally {
             semaphore.release();
         }
